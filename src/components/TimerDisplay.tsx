@@ -1,6 +1,6 @@
 interface TimerDisplayProps{
     minutes: number;
-    seconds: Number;
+    seconds: number;
 }
 
 export default function TimerDisplay({ minutes, seconds }: TimerDisplayProps){

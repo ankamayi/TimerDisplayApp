@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import Controls from "./Controls";
 import MetadataUpdater from "./MetadataUpdater";
 import TimerDisplay from "./TimerDisplay";
@@ -32,6 +33,9 @@ export default function TimerApp() {
   //モードの状態を管理する変数
   const [mode, setMode] = useState<Mode>("work");
 
+  //自動開始の設定
+  const [autoStart, setAutoStart] = useState(false);
+
   //モードを切り替える関数
   const toggleMode = () => {
     //現在のモードを反対のモードに切り替える
@@ -45,8 +49,8 @@ export default function TimerApp() {
       seconds: 0,
     });
 
-    //タイマーを停止状態にする
-    setIsRunning(false);
+    //自動開始がONの場合は次のセッションを自動的に開始
+    setIsRunning(autoStart);
   };
 
   //開始/停止ボタンのハンドラ
@@ -67,7 +71,10 @@ export default function TimerApp() {
     //setIntervalの戻り値（タイマーID）を保持する変数
     let intervalId: NodeJS.Timeout;
 
+    //タイマーが実行中の場合のみ処理を行う
     if (isRunning) {
+      //1秒（1000ミリ秒）ごとに実行される処理を設定しつつ、
+      //戻り値（タイマーID）をintervalId変数に再セット
       intervalId = setInterval(() => {
         setTimeLeft((prev) => {
           //秒数が0の場合の動作
@@ -75,11 +82,15 @@ export default function TimerApp() {
             //分数が0の場合（タイマー終了）
             if (prev.minutes === 0) {
               setIsRunning(false); //タイマーを停止
-              toggleMode(); //モードを自動切り替え
               if (mode === "work"){
                 void confetti(); //紙吹雪を表示
               }
               void playNotificationSound();
+
+              //少し遅延させてからモード切り替えと自動開始を実行
+              setTimeout(() => {
+                 toggleMode(); //モードを自動切り替え
+              }, 100);
               return prev; //現在の状態（0分0秒）を返す
             }
             //分数がまだ残っている場合は、分を1減らして秒を59にセット
@@ -88,21 +99,22 @@ export default function TimerApp() {
           //秒数が1以上の場合は、秒を1減らす
           return { ...prev, seconds: prev.seconds - 1 };
         });
-      }, 1); //動作確認用に一時的に1ミリ秒ごとに実行　1000
+      }, 1000); //動作確認用に一時的に1ミリ秒ごとに実行　1000
     }
 
-    //クリーンアップ関数
+    //クリーンアップ関数（コンポーネントのアンマウント時やisRunningが変わる前）
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
       }
     };
-  }, [isRunning]);
+  }, [isRunning]); //isRunningが変わった時だけこのエフェクトを再実行
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
-      <span id="confettiReward"
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+      <span
+       id="confettiReward"
+       className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
@@ -142,7 +154,7 @@ export default function TimerApp() {
                   key={minutes}
                   value={minutes}
                   >
-                    {minutes}
+                    {minutes}分
                   </option>
               ))}
             </select>
@@ -156,7 +168,7 @@ export default function TimerApp() {
               onChange={(e) => {
                 const newDuration = parseInt(e.target.value);
                 setBreakDuration(newDuration);
-                if (mode === "break" && !isRunning){
+                if (mode === `break` && !isRunning){
                   setTimeLeft({ minutes: newDuration, seconds:0 });
                 }
               }}
@@ -167,12 +179,20 @@ export default function TimerApp() {
                   key={minutes}
                   value={minutes}
                   >
-                    {minutes}
+                    {minutes}分
                   </option>
               ))}
             </select>
           </div>
 
+          {/* 自動開始の設定 */}
+          <div className="flex items-center gap-2 justify-between" > {/* 講義ではw-fullを記述しているが、行頭が飛び出して合わないので記述していない  */}
+            <label className="text-sm font-medium min-w-[4.5rem]">自動開始</label>
+            <Switch
+              checked={autoStart}
+              onCheckedChange={() => setAutoStart(!autoStart)}
+            />
+          </div>
        </CardFooter>
       </Card>
       <MetadataUpdater

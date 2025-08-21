@@ -137,7 +137,7 @@ export default function TimerApp() {
         <CardFooter className="flex flex-col gap-4 w-full max-w-[200px] mx-auto">
           {/* 作業時間の設定 */}
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium min-w-[3.5rem]">作業時間</label>
+            <label className="text-sm font-medium min-w-[4.5rem]">作業時間</label>
             <select
               value={workDuration}
               onChange={(e) => {
@@ -147,7 +147,7 @@ export default function TimerApp() {
                   setTimeLeft({ minutes: newDuration, seconds:0 });
                 }
               }}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
               {[5, 10, 15, 25, 30, 45, 60].map((minutes) =>(
                 <option
@@ -162,7 +162,7 @@ export default function TimerApp() {
 
           {/* 休憩時間の設定 */}
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium min-w-[3.5rem]">休憩時間</label>
+            <label className="text-sm font-medium min-w-[4.5rem]">休憩時間</label>
             <select
               value={breakDuration}
               onChange={(e) => {
@@ -172,7 +172,7 @@ export default function TimerApp() {
                   setTimeLeft({ minutes: newDuration, seconds:0 });
                 }
               }}
-              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
               {[5, 10, 15, 60 ].map((minutes) =>(
                 <option
@@ -186,11 +186,12 @@ export default function TimerApp() {
           </div>
 
           {/* 自動開始の設定 */}
-          <div className="flex items-center gap-2 justify-between" > {/* 講義ではw-fullを記述しているが、行頭が飛び出して合わないので記述していない  */}
+          <div className="flex items-center gap-2 w-full justify-between" > {/* 講義ではw-fullを記述しているが、行頭が飛び出して合わないので記述していない  */}
             <label className="text-sm font-medium min-w-[4.5rem]">自動開始</label>
             <Switch
               checked={autoStart}
               onCheckedChange={() => setAutoStart(!autoStart)}
+              className="cursor-pointer"
             />
           </div>
        </CardFooter>

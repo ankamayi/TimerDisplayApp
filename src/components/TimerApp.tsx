@@ -8,6 +8,7 @@ import TimerDisplay from "./TimerDisplay";
 import { useState, useEffect } from "react";
 import { useReward } from "react-rewards";
 import { playNotificationSound } from "@/utile/sound";
+import { generateRefreshSuggestion } from "@/utile/gemini";
 
 //タイマーのモードを表す型
 type Mode = "work" | "break";
@@ -99,7 +100,7 @@ export default function TimerApp() {
           //秒数が1以上の場合は、秒を1減らす
           return { ...prev, seconds: prev.seconds - 1 };
         });
-      }, 1000); //動作確認用に一時的に1ミリ秒ごとに実行　1000
+      }, 1); //動作確認用に一時的に1ミリ秒ごとに実行　1000
     }
 
     //クリーンアップ関数（コンポーネントのアンマウント時やisRunningが変わる前）
@@ -110,6 +111,16 @@ export default function TimerApp() {
     };
   }, [isRunning]); //isRunningが変わった時だけこのエフェクトを再実行
 
+  // // ================== 動作確認用ここから ==================
+   //useEffect(() => {
+     //const testGemini = async () => {
+       //const suggestion = await generateRefreshSuggestion();
+       //console.log(suggestion);
+     //}
+     //testGemini();
+   //}, []);
+  // // ================== 動作確認用ここまで ==================
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
       <span

@@ -9,7 +9,7 @@ import { NextResponse } from 'next/server';
 
 //GEMINI_API_KEYという定数の中に環境変数を読み込んで格納
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const ai = new GoogleGenAI({ apikey: GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 export async function GET() {
     const prompt = `
@@ -23,6 +23,7 @@ export async function GET() {
      - 絵文字を１つ含めること
      - 簡潔に1文の中に収めること
      - 「～しよう」のように提案する形で終わること
+     - たまに四字熟語を表示すること
 
      # 出力例
      - 大きく背伸びしよう🙆‍♂️

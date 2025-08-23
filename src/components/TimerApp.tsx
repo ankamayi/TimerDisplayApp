@@ -15,7 +15,7 @@ import { generateRefreshSuggestion } from "@/utile/gemini";
 type Mode = "work" | "break";
 
 export default function TimerApp() {
-  const {reward: confetti, isAnimating } = useReward("confettiReward","confetti",{
+  const {reward: confetti } = useReward("confettiReward","confetti",{
     elementCount: 100,
     spread: 70,
     decay: 0.93,

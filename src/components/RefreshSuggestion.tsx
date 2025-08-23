@@ -21,7 +21,7 @@ export default function RefreshSuggestion ({ suggestion, onClose}: RefreshSugges
     return (
     <AnimatePresence>
         {suggestion && (
-            <motion.dev
+            <motion.div
                 initial={{ opacity: 0, y:20 }}
                 animate={{ opacity: 1, y:0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -38,7 +38,7 @@ export default function RefreshSuggestion ({ suggestion, onClose}: RefreshSugges
                 <p className="text-lg font-medium text-gray-700 pr-6">
                 {suggestion}
                 </p>
-            </motion.dev>
+            </motion.div>
         )}
     </AnimatePresence>
     );

@@ -43,4 +43,4 @@ export default function RefreshSuggestion ({ suggestion, onClose}: RefreshSugges
     </AnimatePresence>
     );
 }
-
+//fin

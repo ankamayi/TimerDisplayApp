@@ -13,10 +13,10 @@ export default function RefreshSuggestion ({ suggestion, onClose}: RefreshSugges
         if (suggestion) {
             const timer = setTimeout(() => {
                 onClose();
-            }, 5000);
+            }, 7000);
             return () => clearTimeout(timer);
         }
-    } , [suggestion, onclose]);
+    } , [suggestion, onClose]);
 
     return (
     <AnimatePresence>

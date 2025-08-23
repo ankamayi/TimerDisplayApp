@@ -54,6 +54,12 @@ export default function TimerApp() {
       seconds: 0,
     });
 
+    if (newMode === `break`){
+      generateRefreshSuggestion()
+        .then((suggestion) => setRefreshSuggestion(suggestion))
+        .catch(console.error)
+    }
+
     //自動開始がONの場合は次のセッションを自動的に開始
     setIsRunning(autoStart);
   };
@@ -217,7 +223,7 @@ export default function TimerApp() {
         mode={mode}
       />
       <RefreshSuggestion
-        suggestion={`hoge`}
+        suggestion={refreshSuggestion}
         onClose={ () => setRefreshSuggestion(null)}
       />
     </div>
